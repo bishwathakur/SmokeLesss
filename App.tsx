@@ -1,45 +1,45 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
+ * Main App Component
+ * Entry point of the React Native application
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
+import AppNavigator from './src/presentation/navigation/AppNavigator';
+import { SQLiteDatabase } from './src/infrastructure/database/SQLiteDatabase';
+import { PushNotificationManager } from './src/infrastructure/notifications/PushNotificationManager';
+import { Colors } from './src/core/theme/colors';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
+const initFns = async()=>{
+  // Initialize database
+  await SQLiteDatabase.getInstance().initialize();
+        
+  // Initialize notifications
+  await PushNotificationManager.initialize();
+  await PushNotificationManager.requestPermissions();
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+const App: React.FC = () => {
+  useEffect(() => {
+    // Initialize database and notifications on app start
+    const initializeApp = async () => {
+      try {
+        initFns();
+      } catch (error) {
+        console.error('Error initializing app:', error);
+      }
+    };
+
+    initializeApp();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
+      <AppNavigator />
+    </>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+};
 
 export default App;
+
