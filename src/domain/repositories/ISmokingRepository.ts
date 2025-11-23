@@ -4,7 +4,7 @@
  * This follows the Repository pattern from Clean Architecture
  */
 
-import { SmokingSession } from '../entities/SmokingSession';
+import { SmokingSession } from '../entities/SmokingSess';
 import { DailyStats } from '../entities/DailyStats';
 
 export interface ISmokingRepository {

@@ -6,7 +6,7 @@
 import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import AppNavigator from './src/presentation/navigation/AppNavigator';
-import { SQLiteDatabase } from './src/infrastructure/database/SQLiteDatabase';
+import { SQLiteDatabase } from './src/infrastructure/database/SQLiteDataBase';
 import { PushNotificationManager } from './src/infrastructure/notifications/PushNotificationManager';
 import { Colors } from './src/core/theme/colors';
 
